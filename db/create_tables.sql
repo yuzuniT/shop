@@ -4,7 +4,7 @@ CREATE TABLE shop.admin(
     password VARCHAR(255) NOT NULL,
     created_at DATETIME,
     updated_at DATETIME
-)
+);
 
 CREATE TABLE shop.members(
     id INT NOT NULL PRIMARY KEY,
@@ -20,7 +20,16 @@ CREATE TABLE shop.members(
     is_deleted BOOLEAN,
     created_at DATETIME,
     updated_at DATETIME
-)
+);
+
+
+CREATE TABLE shop.categories(
+    id INT NOT NULL PRIMARY KEY,
+    category_name VARCHAR(255) NOT NULL,
+    created_at DATETIME,
+    updated_at DATETIME
+);
+
 
 CREATE TABLE shop.products(
     id INT NOT NULL PRIMARY KEY,
@@ -33,14 +42,8 @@ CREATE TABLE shop.products(
     created_at DATETIME,
     updated_at DATETIME,
     FOREIGN KEY (category_id) REFERENCES category(id)
-)
+);
 
-CREATE TABLE shop.categories(
-    id INT NOT NULL PRIMARY KEY,
-    category_name VARCHAR(255) NOT NULL,
-    created_at DATETIME,
-    updated_at DATETIME
-)
 
 CREATE TABLE shop.in_carts(
     id INT NOT NULL PRIMARY KEY,
@@ -51,7 +54,7 @@ CREATE TABLE shop.in_carts(
     updated_at DATETIME,
     FOREIGN KEY (member_id) REFERENCES members(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
-)
+);
 
 CREATE TABLE shop.orders(
     id INT NOT NULL PRIMARY KEY,
@@ -68,7 +71,7 @@ CREATE TABLE shop.orders(
     created_at DATETIME,
     updated_at DATETIME,
     FOREIGN KEY (member_id) REFERENCES members(id)
-)
+);
 
 CREATE TABLE shop.products_ordered(
     id INT NOT NULL PRIMARY KEY,
@@ -81,7 +84,7 @@ CREATE TABLE shop.products_ordered(
     updated_at DATETIME,
     FOREIGN KEY (order_id) REFERENCES orders(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
-)
+);
 
 CREATE TABLE shop.delivery_info(
     id INT NOT NULL PRIMARY KEY,
@@ -94,4 +97,4 @@ CREATE TABLE shop.delivery_info(
     created_at DATETIME,
     updated_at DATETIME,
     FOREIGN KEY (member_id) REFERENCES members(id)
-)
+);
