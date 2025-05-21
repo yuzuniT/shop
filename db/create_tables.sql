@@ -12,7 +12,7 @@ CREATE TABLE shop.members(
     last_name VARCHAR(255) NOT NULL,
     family_name_kana VARCHAR(255),
     last_name_kana VARCHAR(255),
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     postal_code CHAR(8),
     address VARCHAR(255),
@@ -45,7 +45,7 @@ CREATE TABLE shop.products(
 );
 
 
-CREATE TABLE shop.in_carts(
+CREATE TABLE shop.cart_items(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     member_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE shop.orders(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     member_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    postal_number CHAR(8) NOT NULL,
+    postal_code CHAR(8) NOT NULL,
     address VARCHAR(255) NOT NULL,
     phone_number VARCHAR(15),
     email VARCHAR(255),
@@ -73,7 +73,7 @@ CREATE TABLE shop.orders(
     FOREIGN KEY (member_id) REFERENCES members(id)
 );
 
-CREATE TABLE shop.products_ordered(
+CREATE TABLE shop.order_items(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE shop.products_ordered(
 CREATE TABLE shop.delivery_info(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     member_id INT NOT NULL,
-    postal_number CHAR(8) NOT NULL,
+    postal_code CHAR(8) NOT NULL,
     address VARCHAR(255) NOT NULL,
     phone_number VARCHAR(15),
     email VARCHAR(255),
