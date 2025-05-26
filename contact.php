@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +15,10 @@
 
 <main>
 
+    <div id="contact_title">
+        <h1>お問い合わせ</h1>
+    </div>
 
-    <h1>お問い合わせ</h1>
     <form class="form_group" action="contact_confirm.php" method="post">
 
         <div class="name_box">
