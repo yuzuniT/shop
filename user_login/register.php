@@ -8,10 +8,14 @@ session_start();
 
 //POSTされてきたデータを格納する変数の定義と初期化
 $datas = [
-    'name'  => '',
+    'family_name'  => '',
+    'last_name'  => '',
+    'email'  => '',
     'password'  => '',
     'confirm_password'  => ''
 ];
+
+$errors=[];
 
 
 
@@ -32,25 +36,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // バリデーション
-    $errors = validation($datas);
+    $errors = validation($datas,"register");
 
     //データベースの中に同一ユーザー名が存在していないか確認
-    if(empty($errors['name'])){
-        $sql = "SELECT id FROM users WHERE name = :name";
+    if(empty($errors['email'])){
+        $sql = "SELECT id, email, password FROM shop.members WHERE email = :email";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue('name',$datas['name'],PDO::PARAM_STR);
+        $stmt->bindValue('email',$datas['email'],PDO::PARAM_STR);
         $stmt->execute();
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            $errors['name'] = 'This username is already taken.';
+            $errors['email'] = 'このメールアドレスは既に登録されています。';
         }
     }
     //エラーがなかったらDBへの新規登録を実行
     if(empty($errors)){
         $params = [
-            'id' =>null,
-            'name'=>$datas['name'],
-            'password'=>password_hash($datas['password'], PASSWORD_DEFAULT),
-            'created_at'=>null
+            'family_name'=>$datas['family_name'],
+            'last_name'=>$datas['last_name'],
+            'email'=>$datas['email'],
+            'password'=>password_hash($datas['password'], PASSWORD_DEFAULT)
         ];
 
         $count = 0;
@@ -68,14 +72,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         $pdo->beginTransaction();//トランザクション処理
         try {
-            $sql = 'insert into users ('.$columns .')values('.$values.')';
+            $sql = 'insert into shop.members ('.$columns .')values('.$values.')';
+            echo var_dump($params);
+            echo $sql;
             $stmt = $pdo->prepare($sql);
             $stmt->execute($params);
             $pdo->commit();
             header("location: login.php");
             exit;
         } catch (PDOException $e) {
-            echo 'ERROR: Could not register.';
+            echo 'エラー：登録処理に失敗しました。';
+            echo $e->getMessage();
             $pdo->rollBack();
         }
     }
@@ -83,12 +90,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?>
  
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up</title>
-    <!-- bootstrap読み込み -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Sound Space/新規登録</title>
+    <base href="/shop/">
+    <link href="style.css" rel="stylesheet">
     <style>
         body{
             font: 14px sans-serif;
@@ -101,31 +108,51 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </style>
 </head>
 <body>
+<?php include "../common/header.php"; ?>
+
+<main>
     <div class="wrapper">
-        <h2>Sign Up</h2>
-        <p>Please fill this form to create an account.</p>
-        <form action="<?php echo $_SERVER ['SCRIPT_NAME']; ?>" method="post">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="name" class="form-control <?php echo isset($errors['name']) && !empty(h($errors['name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['name']); ?>">
-                <span class="invalid-feedback"><?php echo h($errors['name']); ?></span>
-            </div>    
-            <div class="form-group">
-                <label>Password</label>
+        <h2>新規会員登録</h2>
+        <p>以下の項目をご入力ください。</p>
+        <form class="form_group" action="<?php echo $_SERVER ['SCRIPT_NAME']; ?>" method="post">
+
+            <div class="register_name_box">
+
+                <label for="family_name">姓</label>
+                <input type="text" name="family_name" class="form-control <?php echo isset($errors['family_name']) && !empty(h($errors['family_name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['family_name']); ?>">
+                <span class="invalid-feedback"><?php echo isset($errors['family_name']) ? h($errors['family_name']) : ''; ?></span>
+
+                <label for="last_name">名</label>
+                <input type="text" name="last_name" class="form-control <?php echo isset($errors['last_name']) && !empty(h($errors['last_name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['last_name']); ?>">
+                <span class="invalid-feedback"><?php echo isset($errors['last_name']) ? h($errors['last_name']) : ''; ?></span>
+                
+            </div>
+            
+
+            <div>
+                <label>メールアドレス</label>
+                <input type="text" name="email" class="form-control <?php echo isset($errors['email']) && !empty(h($errors['email'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['email']); ?>">
+                <span class="invalid-feedback"><?php echo isset($errors['email']) ? h($errors['email']) : ''; ?></span>
+            </div>
+            <div>
+                <label>パスワード</label>
                 <input type="password" name="password" class="form-control <?php echo  isset($errors['password']) && !empty(h($errors['password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['password']); ?>">
-                <span class="invalid-feedback"><?php echo h($errors['password']); ?></span>
+                <span class="invalid-feedback"><?php echo isset($errors['password']) ? h($errors['password']) : ''; ?></span>
             </div>
-            <div class="form-group">
-                <label>Confirm Password</label>
+            <div>
+                <label>確認用パスワード</label>
                 <input type="password" name="confirm_password" class="form-control <?php echo  isset($errors['confirm_password']) && !empty(h($errors['confirm_password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['confirm_password']); ?>">
-                <span class="invalid-feedback"><?php echo h($errors['confirm_password']); ?></span>
+                <span class="invalid-feedback"><?php echo isset($errors['confirm_password']) ? h($errors['confirm_password']) : ''; ?></span>
             </div>
-            <div class="form-group">
+            <div style="text-align:end">
                 <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
-                <input type="submit" class="btn btn-primary" value="Submit">
+                <button type="submit">登録</button>
             </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+            <p>既にアカウントを持っていますか？ <a href="user_login/login.php">ログイン</a></p>
         </form>
     </div>    
+
+</main>
+<?php include "../common/footer.php"; ?>
 </body>
 </html>
