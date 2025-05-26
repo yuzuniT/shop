@@ -7,16 +7,16 @@ session_start();
 
 // セッション変数 $_SESSION["loggedin"]を確認。ログイン済だったらトップページへリダイレクト
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: index.php");
+    header("location: ../index.php");
     exit;
 }
 
 //POSTされてきたデータを格納する変数の定義と初期化
 $datas = [
     'email'  => '',
-    'password'  => '',
-    'confirm_password'  => ''
+    'password'  => ''
 ];
+$errors=[];
 $login_err = "";
 
 //GET通信だった場合はセッション変数にトークンを追加
@@ -37,17 +37,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // バリデーション
-    $errors = validation($datas,false);
+    $errors = validation($datas,"login");
     if(empty($errors)){
         //メールアドレスから該当するユーザー情報を取得
-        $sql = "SELECT email,password FROM users WHERE email = :email";
+        $sql = "SELECT email, password, family_name, last_name FROM members WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue('email',$datas['email'],PDO::PARAM_STR);
         $stmt->execute();
 
         //ユーザー情報があれば変数に格納
         if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            //パスワードがあっているか確認
+            //ハッシュ化されたパスワードがあっているか確認。
             if (password_verify($datas['password'],$row['password'])) {
                 //セッションIDをふりなおす
                 session_regenerate_id(true);
@@ -55,21 +55,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $_SESSION["loggedin"] = true;
                 $_SESSION["email"] = $row['email'];
                 $_SESSION["id"] =  $row['id'];
-                //ウェルカムページへリダイレクト
-                header("location:welcome.php");
+                $_SESSION["name"] = $row['family_name'].' '.$row['last_name'];
+                
+                //トップページへリダイレクト
+                header("location: ../index.php");
                 exit();
             } else {
-                $login_err = 'Invalid username or password.';
+                $login_err = 'メールアドレスかパスワードが間違っています。';
             }
         }else {
-            $login_err = 'Invalid username or password.';
+            $login_err = 'メールアドレスかパスワードが間違っています。';
         }
     }
 }
 ?>
  
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <base href="/shop/">
@@ -88,11 +90,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
 
+
 <?php include "../common/header.php"; ?>
 
+<main>
+
+    
 
     <div class="wrapper">
         <h2>ログイン</h2>
+
         <p>メールアドレスとパスワードを入力してください。</p>
 
         <?php 
@@ -101,28 +108,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }        
         ?>
 
-        <form action="<?php echo $_SERVER ['SCRIPT_NAME']; ?>" method="post">
-            <div class="form-group">
-                <label>メールアドレス</label>
-                <!-- isset($errors['name'])を条件に追加
-                 isset関数の引数は変数や配列のキーのみ。関数の戻り値であるh($errors['name'])は引数にできないため、ここではh関数を使わない。 -->
-                <input type="text" name="name" class="form-control <?php echo isset($errors['name']) && !empty(h($errors['name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['name']); ?>">
-                <span class="invalid-feedback"><?php echo h($errors['name']); ?></span>
-            </div>    
-            <div class="form-group">
-                <label>パスワード</label>
+        <form class="form_group" action="<?php echo $_SERVER ['SCRIPT_NAME']; ?>" method="post">
+
+            <div>
+                <label for="email">メールアドレス</label>
+                <!-- isset($errors['email'])を条件に追加
+                isset関数の引数は変数や配列のキーのみ。関数の戻り値であるh($errors['email'])は引数にできないため、ここではh関数を使わない。 -->
+                <input type="text" name="email" class="form-control <?php echo isset($errors['email']) && !empty(h($errors['email'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['email']); ?>">
+                <span class="invalid-feedback"><?php echo isset($errors['email']) ? h($errors['email']) : ''; ?></span>
+            </div>
+
+            <div>
+                <label for="password">パスワード</label>
                 <!-- isset($errors['password'])を条件に追加 -->
-                <input type="password" name="password" class="form-control <?php echo isset($errors['password']) && empty(h($errors['password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['password']); ?>">
-                <span class="invalid-feedback"><?php echo h($errors['password']); ?></span>
+                <input type="password" name="password" class="form-control <?php echo isset($errors['password']) && !empty(h($errors['password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['password']); ?>">
+                <span class="invalid-feedback"><?php echo isset($errors['password']) ? h($errors['password']) : ''; ?></span>
             </div>
-            <div class="form-group">
+
+            <div style="text-align:end">
                 <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
-                <input type="submit" class="btn btn-primary" value="ログイン">
+                <button type="submit">ログイン</button>
             </div>
-            <p>アカウントを持っていませんか？ <a href="register.php">新規登録</a></p>
+
+
+    
+
+            <p>アカウントを持っていませんか？ <a href='user_login/register.php'>新規登録</a></p>
         </form>
     </div>
 
+
+</main>
 <?php include "../common/footer.php"; ?>
 
 

@@ -2,8 +2,9 @@
 <?php
 // セッション変数 $_SESSION["cart_items"]を確認。空であればcart_empty.phpへリダイレクト
 
-/*
+
 session_start();
+/*
 if(!isset($_SESSION["cart_items"]) || $_SESSION["cart_items"] !== true){
     header("location:cart_empty.php");
     exit;

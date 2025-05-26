@@ -17,7 +17,7 @@ function checkToken(){
                 セッションの有効期限が切れたか、操作に問題が発生しました。
                 ページを更新し、もう一度お試しください。
                 それでも解決しない場合は、お問い合わせください。
-EOD;
+                EOD;
         exit;
     }
 }
@@ -75,6 +75,30 @@ function ValidateName(string $name): ?string {
         return "名前を入力してください。";
     }
     elseif (!preg_match('/^.+$/u', $name)) {
+        return "有効な名前を入力してください。";
+    }
+    return null;
+}
+
+// 名字のバリデーション
+function ValidateFamilyName(string $family_name): ?string {
+
+    if (empty($family_name)) {
+        return "名字を入力してください。";
+    }
+    elseif (!preg_match('/^.+$/u', $family_name)) {
+        return "有効な名字を入力してください。";
+    }
+    return null;
+}
+
+// 下の名前のバリデーション
+function ValidateLastName(string $last_name): ?string {
+
+    if (empty($last_name)) {
+        return "名前を入力してください。";
+    }
+    elseif (!preg_match('/^.+$/u', $last_name)) {
         return "有効な名前を入力してください。";
     }
     return null;
@@ -171,40 +195,116 @@ function validation(array $datas,string $formtype="register"): array{
     // 新規登録時
     if($formtype=="register"){
 
-        $errors["email"]=ValidateEmail($datas["email"]);
-        $errors["password"]=ValidatePassword($datas["password"]);
-        $errors["confirm_password"]=ValidateConfirmPassword($datas["confirm_password"],$datas["password"]);
+
+        $family_name_error=ValidateFamilyName($datas["family_name"]);
+        if ($family_name_error !== null) {
+            $errors["family_name"] = $family_name_error;
+        }
+
+        $last_name_error=ValidateLastName($datas["last_name"]);
+        if ($last_name_error !== null) {
+            $errors["last_name"] = $last_name_error;
+        }
+
+        $email_error=ValidateEmail($datas["email"]);
+        if ($email_error !== null) {
+            $errors["email"] = $email_error;
+        }
+        $password_error = ValidatePassword($datas["password"]);
+        if ($password_error !== null) {
+            $errors["password"] = $password_error;
+        }
+
+        $confirm_password_error = ValidateConfirmPassword($datas["confirm_password"],$datas["password"]);
+        if ($confirm_password_error !== null) {
+            $errors["confirm_password"] = $confirm_password_error;
+        }
 
     }
 
     // ログイン時
     elseif($formtype=="login"){
 
-        $errors["email"]=ValidateEmail($datas["email"]);
-        $errors["password"]=ValidatePassword($datas["password"]);
+        $email_error=ValidateEmail($datas["email"]);
+        if ($email_error !== null) {
+            $errors["email"] = $email_error;
+        }
+        $password_error = ValidatePassword($datas["password"]);
+        if ($password_error !== null) {
+            $errors["password"] = $password_error;
+        }
+
+        
+
 
     }
 
     // 送り先情報入力時
     elseif($formtype=="delivery_info"){
 
-        $errors["name"]=ValidateName($datas["name"]);
-        $errors["postal_code"]=ValidatePostalCode($datas["postal_code"]);
-        $errors["address"]=ValidateAddress($datas["address"]);
-        $errors["phone_number"]=ValidatePhoneNumber($datas["phone_number"]);
-        $errors["payment_method"]=ValidatePayment($datas["payment_method"]);
+        $family_name_error=ValidateFamilyName($datas["family_name"]);
+        if ($family_name_error !== null) {
+            $errors["family_name"] = $family_name_error;
+        }
+
+        $last_name_error=ValidateLastName($datas["last_name"]);
+        if ($last_name_error !== null) {
+            $errors["last_name"] = $last_name_error;
+        }
+        $postal_code_error=ValidatePostalCode($datas["postal_code"]);
+        if ($postal_code_error !== null) {
+            $errors["postal_code"] = $postal_code_error;
+        }
+
+        $address_error=ValidateAddress($datas["address"]);
+        if ($address_error !== null) {
+            $errors["address"] = $address_error;
+        }
+
+        $payment_method_error=ValidatePayment($datas["payment_method"]);
+        if ($payment_method_error !== null) {
+            $errors["payment_method"] = $payment_method_error;
+        }
 
     }
 
     // お問い合わせ時
     elseif($formtype=="contact"){
 
-        $errors["name"]=ValidateName($datas["name"]);
-        $errors["email"]=ValidateEmail($datas["email"]);
-        $errors["phone_number"]=ValidatePhoneNumber($datas["phone_number"]);
-        $errors["contact_type"]=ValidateContactType($datas["contact_type"]);
-        $errors["contact_title"]=ValidateContactTitle($datas["contact_title"]);
-        $errors["message"]=ValidateContactMessage($datas["message"]);
+        $family_name_error=ValidateFamilyName($datas["family_name"]);
+        if ($family_name_error !== null) {
+            $errors["family_name"] = $family_name_error;
+        }
+
+        $last_name_error=ValidateLastName($datas["last_name"]);
+        if ($last_name_error !== null) {
+            $errors["last_name"] = $last_name_error;
+        }
+
+        $email_error=ValidateEmail($datas["email"]);
+        if ($email_error !== null) {
+            $errors["email"] = $email_error;
+        }
+
+        $phone_number_error=ValidatePhoneNumber($datas["phone_number"]);
+        if ($phone_number_error !== null) {
+            $errors["phone_number"] = $phone_number_error;
+        }
+        
+        $contact_type_error=ValidateContactType($datas["contact_type"]);
+        if ($contact_type_error !== null) {
+            $errors["contact_type"] = $contact_type_error;
+        }
+
+        $contact_title=ValidateContactTitle($datas["contact_title"]);
+        if ($contact_title !== null) {
+            $errors["contact_title"] = $contact_title;
+        }
+
+        $message_error=ValidateContactMessage($datas["message"]);
+        if ($message_error !== null) {
+            $errors["message"] = $message_error;
+        }
 
     }
 
