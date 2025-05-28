@@ -100,20 +100,49 @@ footer{
 
 .product_list{
     display:grid;
-    grid-template-columns:repeat(3,200px);
-    column-gap:20px;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    padding:20px;
 }
 .product_box{
     display:flex;
     flex-direction:column;
-    width:200px;
-    border-style:solid;
+    border:1px solid #ddd;
     background-color:#F5F5F5;
-
-
+    padding:10px;
 
 }
 
+.product_img{
+    max-width:100%;
+    height:auto;
+}
+
+.index_product_price{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.index_purchase_button{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.pagination{
+    text-align:center;
+    margin:20px 0;
+}
+
+
+.pagination a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
+}
 
 /* 商品ページ */
 
