@@ -32,7 +32,7 @@ CREATE TABLE shop.categories(
 
 
 CREATE TABLE shop.products(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id VARCHAR(10) NOT NULL PRIMARY KEY,
     category_id INT,
     product_name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -48,7 +48,7 @@ CREATE TABLE shop.products(
 CREATE TABLE shop.cart_items(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     member_id INT NOT NULL,
-    product_id INT NOT NULL,
+    product_id VARCHAR(10) NOT NULL,
     number INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -76,7 +76,7 @@ CREATE TABLE shop.orders(
 CREATE TABLE shop.order_items(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
-    product_id INT NOT NULL,
+    product_id VARCHAR(10) NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     number INT NOT NULL,
     ready_status VARCHAR(20) DEFAULT 'pending',
