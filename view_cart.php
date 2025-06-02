@@ -16,11 +16,26 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
 
     if(!isset($_SESSION["cart_items"]) || empty($_SESSION["cart_items"])){
         header("location:cart_empty.php");
-        exit;
+        exit();
     }
+
 
 }elseif($_SERVER["REQUEST_METHOD"]=="POST"){
 
+
+    // 買い物かごで削除ボタンを押した時の処理
+
+    if(isset($_POST["product_id"])&&isset($_POST["delete_item"])){
+        // IDの検証
+        if(!preg_match('/^[A-Z0-9]{10}$/', $_POST["product_id"])){
+            exit("エラー：商品IDが正しくありません。");
+        }
+        $product_id=$_POST["product_id"];
+        unset($_SESSION["cart_items"][$product_id]); //商品削除処理
+        unset($_POST["delete_item"]);
+        header("location:view_cart.php"); //ページ更新・getにリダイレクト
+        exit();
+    }
 
     /* POSTの中身が適切か確認スタート */
 
@@ -134,9 +149,11 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
                 <p class="cart_item_name"><?php echo h($item["product_name"]);?></p>
                 <p class="cart_item_price">¥ <?php echo number_format($item["base_price"]);?></p>
                 <p class="cart_item_quantity">数量：<?php echo h($item["quantity"]);?> 個</p>
-                <div class="delete_cart_item">
-                    <a href="">削除</a>
-                </div>
+                <form class="delete_cart_item" action="view_cart.php" method="post">
+                    <input type="hidden" name="product_id" value="<?php echo h($id);?>">
+                    <input type="hidden" name="delete_item" value="1">
+                    <button class="link_style_btn" type="submit">削除</button>
+                </form>
             </div>
 
             <?php $sum += $item["base_price"]*(int)(h($item["quantity"]));?>
