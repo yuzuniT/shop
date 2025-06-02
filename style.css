@@ -302,6 +302,18 @@ footer{
     align-content:center;
 }
 
+.link_style_btn{
+    cursor:pointer;
+    border: none;
+    background: none;
+    color: #0033cc;
+}
+
+.link_style_btn:hover{
+  text-decoration: underline;
+  color: #002080;
+}
+
 
 .sum_price_info{
     background-color:#F5F5F5;
