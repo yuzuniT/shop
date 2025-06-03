@@ -32,7 +32,7 @@ if(isset($_GET["search"]) && !empty($_GET["search"])){
 
         // 商品データを取得
         $stmt=$pdo->prepare("SELECT id, product_name, description, base_price FROM products WHERE is_active=TRUE and product_name LIKE ? LIMIT ? OFFSET ?");
-        $stmt->execute([$keyword,"$items_per_page", $offset]);
+        $stmt->execute([$keyword, (int)$items_per_page, (int)$offset]);
         $products=$stmt->fetchall();
 
     }catch(PDOException $e){
@@ -52,7 +52,7 @@ if(isset($_GET["search"]) && !empty($_GET["search"])){
 
         // 商品データを取得
         $stmt=$pdo->prepare("SELECT id, product_name, description, base_price FROM products WHERE is_active=TRUE LIMIT ? OFFSET ?");
-        $stmt->execute(["$items_per_page", $offset]);
+        $stmt->execute([(int)$items_per_page, (int)$offset]);
         $products=$stmt->fetchall();
 
     }catch(PDOException $e){

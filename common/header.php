@@ -23,7 +23,7 @@ $keyword = isset($_GET["search"]) && !empty($_GET["search"]) ? h($_GET["search"]
         <div class="search_form">
 
             <form action="index.php" method="GET">
-                <input id="header_search_input" type="search" name="search"  placeholder="商品を検索" value=<?php echo $keyword;?>>
+                <input id="header_search_input" type="search" name="search"  placeholder="商品を検索" value="<?php echo $keyword;?>">
                 <button type="submit">検索</button>
             </form>
 
