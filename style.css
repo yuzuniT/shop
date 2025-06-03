@@ -144,6 +144,10 @@ footer{
     text-decoration: underline;
 }
 
+.search_keyword{
+    color:#c45500;
+}
+
 /* 商品ページ */
 
 .product_info{

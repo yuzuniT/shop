@@ -7,6 +7,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && isset($_SE
     $user_name=$_SESSION["name"];
 }
 
+// 検索ワード
+$keyword = isset($_GET["search"]) && !empty($_GET["search"]) ? h($_GET["search"]) : "";
+
 ?>
 
 <header>
@@ -19,9 +22,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && isset($_SE
 
         <div class="search_form">
 
-            <form action="" method="GET">
-                <input id="header_search_input" type="search" placeholder="商品を検索">
-                <button type="submit" name="submit">検索</button>
+            <form action="index.php" method="GET">
+                <input id="header_search_input" type="search" name="search"  placeholder="商品を検索" value=<?php echo $keyword;?>>
+                <button type="submit">検索</button>
             </form>
 
         </div>
@@ -31,10 +34,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && isset($_SE
             <!--ログイン済 : ようこそ！◯◯さん
                 未ログイン : 「ログイン」リンクで誘導-->
             <p>ようこそ！ <?php echo $user_name?>  さん</p>
-            <?php if (!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && isset($_SESSION["name"]))){
-                echo "<a href='user_login/login.php'>ログイン</a>";
-            }
-            ?>
+            <?php if (!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && isset($_SESSION["name"]))):?>
+                <a href='user_login/login.php'>ログイン</a>
+            <?php endif; ?>
 
         </div>
 
