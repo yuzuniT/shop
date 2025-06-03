@@ -15,18 +15,57 @@ else{
     $page=1;
 }
 
-$offset=($page-1)*$items_per_page; //全商品中何番目の商品からそのページに表示するかを表す
+//何番目の商品からそのページに表示するかを表す
+$offset=($page-1)*$items_per_page;
 
+// ヘッダーから商品が検索された場合
+if(isset($_GET["search"]) && !empty($_GET["search"])){
 
-// 全商品を取得 (ページネーション用)
-$stmt=$pdo->query("SELECT COUNT(*) FROM products WHERE is_active=TRUE");
-$total_items=$stmt->fetchcolumn();
-$total_pages=ceil($total_items / $items_per_page);
+    $keyword='%'.h($_GET["search"]).'%';
 
-// 商品データを取得
-$stmt=$pdo->prepare("SELECT id, product_name, description, base_price FROM products WHERE is_active=TRUE LIMIT ? OFFSET ?");
-$stmt->execute(["$items_per_page", $offset]);
-$products=$stmt->fetchall();
+    try{
+        // キーワードを含む商品の数を取得 (ページネーション用)
+        $stmt=$pdo->prepare("SELECT COUNT(*) FROM products WHERE is_active=TRUE and product_name LIKE :keyword");
+        $stmt->execute(["keyword"=>$keyword]);
+        $total_items=$stmt->fetchcolumn();
+        $total_pages=ceil($total_items / $items_per_page);
+
+        // 商品データを取得
+        $stmt=$pdo->prepare("SELECT id, product_name, description, base_price FROM products WHERE is_active=TRUE and product_name LIKE ? LIMIT ? OFFSET ?");
+        $stmt->execute([$keyword,"$items_per_page", $offset]);
+        $products=$stmt->fetchall();
+
+    }catch(PDOException $e){
+
+        exit("データベースエラー：".$e->getMessage());
+
+    }
+
+// 商品が検索されていない場合
+}else{
+
+    try{
+        // 全商品の数を取得 (ページネーション用)
+        $stmt=$pdo->query("SELECT COUNT(*) FROM products WHERE is_active=TRUE");
+        $total_items=$stmt->fetchcolumn();
+        $total_pages=ceil($total_items / $items_per_page);
+
+        // 商品データを取得
+        $stmt=$pdo->prepare("SELECT id, product_name, description, base_price FROM products WHERE is_active=TRUE LIMIT ? OFFSET ?");
+        $stmt->execute(["$items_per_page", $offset]);
+        $products=$stmt->fetchall();
+
+    }catch(PDOException $e){
+
+        exit("データベースエラー：".$e->getMessage());
+
+    }
+
+}
+
+// 何番目の商品までそのページに表示するかを表す
+$max = $offset + $items_per_page;
+$max= $max > $total_items ? $total_items : $max;
 
 ?>
 
@@ -45,6 +84,14 @@ $products=$stmt->fetchall();
 
 <main>
 
+    <?php if(isset($_GET["search"]) && !empty($_GET["search"])):?>
+
+        <h2>検索結果：<span class="search_keyword">"<?php echo h($_GET["search"])?>"</span></h2>
+
+        <p><?php echo $total_items. " 件のうち " .$offset + 1 . "-" .$max. "件" ;?></p>
+
+    <?php endif;?>
+
     <h1>商品一覧</h1>
 
     <div class="product_list">
@@ -57,7 +104,7 @@ $products=$stmt->fetchall();
 
 
             <div class="product_box">
-                <img class="product_img" src="img/products/<?php echo h($product['id']).'.jpg'?>" alt="<?php echo h($product['product_name'])?>">
+                <img class="product_img" src="img/products/<?php echo h($product['id'])?>.jpg" alt="<?php echo h($product['product_name'])?>">
                 <h3 class="index_product_name"><?php echo h($product['product_name'])?></h3>
                 <p class="index_product_desc"><?php echo h($product['description'])?></p>
                 <h4 class="index_product_price">¥ <?php echo number_format($product['base_price'])?></h4> <!--数値なのでエスケープの必要なし-->
@@ -72,18 +119,43 @@ $products=$stmt->fetchall();
 
 
     <!-- ページネーション用 -->
-    <div class="pagination">
-        <?php if ($page>1) :?>
-            <a href="?page=<?php echo $page-1;?>">前へ</a>
-        <?php endif;?>
 
-        <span>ページ <?php echo $page?> / <?php echo $total_pages?></span>
 
-        <?php if ($page<$total_pages) :?>
-            <a href="?page=<?php echo $page+1;?>">次へ</a>
-        <?php endif;?>
+    <!-- 検索した場合 -->
+    <?php if(isset($_GET["search"]) && !empty($_GET["search"])):?>
 
-    </div>
+        <div class="pagination">
+            <?php if ($page>1) :?>
+                <a href="?search=<?php echo h($_GET["search"])?>&page=<?php echo $page-1;?>">前へ</a>
+            <?php endif;?>
+
+            <span>ページ <?php echo $page?> / <?php echo $total_pages?></span>
+
+            <?php if ($page<$total_pages) :?>
+                <a href="?search=<?php echo h($_GET["search"])?>&page=<?php echo $page+1;?>">次へ</a>
+            <?php endif;?>
+
+        </div>
+
+    
+    <!-- 検索しなかった場合 -->
+    <?php else:?>
+
+
+        <div class="pagination">
+            <?php if ($page>1) :?>
+                <a href="?page=<?php echo $page-1;?>">前へ</a>
+            <?php endif;?>
+
+            <span>ページ <?php echo $page?> / <?php echo $total_pages?></span>
+
+            <?php if ($page<$total_pages) :?>
+                <a href="?page=<?php echo $page+1;?>">次へ</a>
+            <?php endif;?>
+
+        </div>
+
+    <?php endif;?>
             
 
 </main>
@@ -93,4 +165,3 @@ $products=$stmt->fetchall();
 
 </body>
 </html>
-
