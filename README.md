@@ -19,4 +19,7 @@ https://docs.google.com/spreadsheets/d/101n_6tjtNjLqDq1EUwKNTWGXp0tCrQ43mKaziv_D
   
   <li>［GitHub］一人開発でもissueベース/セルフプルリクエストを使って開発する</li>
   https://qiita.com/braveryk7/items/5208263cd06a8878f0c2
+
+ <li>ローカル環境（XAMPP）でメールを送受信</li>
+  https://trivia.denet.co.jp/blog/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E7%92%B0%E5%A2%83%EF%BC%88xampp%EF%BC%89%E3%81%A7%E3%83%A1%E3%83%BC%E3%83%AB%E3%82%92%E9%80%81%E5%8F%97%E4%BF%A1/
 </ul>
