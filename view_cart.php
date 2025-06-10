@@ -129,6 +129,8 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
 <main>
 
 <div class="cart_and_sum_price">
+
+
     <div class="cart_info">
         <h2>買い物かご</h2>
         <p>価格</p>
@@ -166,9 +168,10 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
     </div>
 
     <div class="sum_price_info">
-        <div style="text-align:center">
-            <button onclick="location.href='delivery_form.php'">ご購入手続き</button>
-        </div>
+        <form style="text-align:center" action="delivery_form.php" method="post">
+            <input type="hidden" name="total_amount" value="<?php echo $sum;?>">
+            <button type="submit">ご購入手続き</button>
+        </form>
         <h3>小計 ¥ <?php echo number_format($sum);?></h3>
         <h3>送料 ¥ 610</h3> <!--今回は地域ごとの送料は考慮しない-->
         <h2>合計 ¥ <?php echo number_format($sum+610);?></h2>
