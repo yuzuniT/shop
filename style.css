@@ -202,7 +202,7 @@ footer{
 .name_box{
     display:grid;
     grid-template-columns:auto auto;
-    grid-template-rows:auto auto;
+    grid-template-rows:auto auto auto;
     grid-auto-flow:column;
     column-gap:15px;
 }
@@ -213,6 +213,11 @@ footer{
     grid-template-rows:auto auto auto;
     grid-auto-flow:column;
     column-gap:15px;
+}
+
+.input_required{
+    color:red;
+    font-size:12px;
 }
 
 /* お問い合わせ確認 */
@@ -249,6 +254,7 @@ footer{
 .cart_and_sum_price{
     display:flex;
     gap:10%;
+    align-items:flex-start;
 }
 
 .cart_info{
@@ -323,14 +329,27 @@ footer{
     background-color:#F5F5F5;
     box-sizing:border-box;
     padding:1vw;
+ 
 
     width:200px;/*デスクトップ環境を想定*/
+    height:400px;
     flex-shrink:0;
 }
 
 
 /* 注文確認 */
 
+table{
+    width:100%;
+    line-height:40px;
+}
+
+
+th{
+    text-align:left;
+    width:25%;
+
+}
 
 .order_and_sum_price{
     display:flex;
@@ -340,7 +359,8 @@ footer{
 .delivery_and_cart{
     display:flex;
     flex-direction:column;
-    gap:10%;
+    gap:10px;
+    min-width:400px;
 }
 
 .delivery_info{
@@ -356,4 +376,9 @@ footer{
     border-bottom:solid;
     margin:0;
     
+}
+
+.confirm_btn_container{
+    display:flex;
+    justify-content:space-around;
 }

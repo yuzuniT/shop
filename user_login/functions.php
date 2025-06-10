@@ -23,6 +23,11 @@ function checkToken(){
 }
 
 
+// order_confirm.phpで使用。submit後エラーが出た時入力情報を欄に残すために。
+function orderValue(string $key, array $datas): ?string {
+    $value=isset($datas[$key]) && !empty($datas[$key]) ? h($datas[$key]) : "";
+    return $value;
+}
 //POSTされた値のバリデーション
 
 
@@ -110,7 +115,7 @@ function ValidatePostalCode(string $postal_code): ?string {
     if (empty($postal_code)) {
         return "郵便番号を入力してください。";
     }
-    elseif (!preg_match('/^\d{7]$/', $postal_code)) {
+    elseif (!preg_match('/^\d{7}$/', $postal_code)) {
         return "郵便番号は「1234567」の形式で入力してください。";
     }
     return null;
@@ -132,7 +137,7 @@ function ValidatePhoneNumber(string $phone_number): ?string {
     if (empty($phone_number)) {
         return "電話番号を入力してください。";
     }
-    if (!preg_match('/^\d{4.15}$/', $phone_number)) {
+    if (!preg_match('/^\d{4,15}$/', $phone_number)) {
         return "電話番号は「09012345678」の形式で入力してください。";
     }
     return null;
@@ -260,6 +265,18 @@ function validation(array $datas,string $formtype="register"): array{
         $address_error=ValidateAddress($datas["address"]);
         if ($address_error !== null) {
             $errors["address"] = $address_error;
+        }
+
+        $email_error=ValidateEmail($datas["email"]);
+        if ($email_error !== null) {
+            $errors["email"] = $email_error;
+        }
+
+        $phone_number_error=ValidatePhoneNumber($datas["phone_number"]);
+        
+        // 電話番号が空欄の場合は実行されない
+        if (isset($datas["phone_number"]) && !empty($datas["phone_number"]) && $phone_number_error !== null) {
+            $errors["phone_number"] = $phone_number_error;
         }
 
         $payment_method_error=ValidatePayment($datas["payment_method"]);
