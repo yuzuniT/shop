@@ -38,7 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // バリデーション
     $errors = validation($datas,"register");
 
-    //データベースの中に同一ユーザー名が存在していないか確認
+    //データベースの中に同一メールアドレスが存在していないか確認
     if(empty($errors['email'])){
         $sql = "SELECT id, email, password FROM shop.members WHERE email = :email";
         $stmt = $pdo->prepare($sql);
@@ -73,8 +73,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $pdo->beginTransaction();//トランザクション処理
         try {
             $sql = 'insert into shop.members ('.$columns .')values('.$values.')';
-            echo var_dump($params);
-            echo $sql;
             $stmt = $pdo->prepare($sql);
             $stmt->execute($params);
             $pdo->commit();

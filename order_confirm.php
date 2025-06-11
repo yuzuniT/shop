@@ -157,7 +157,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             注文番号： {$order_id_zerofill}
             注文日時： {$order_date}
-            お届け先情報：
+
+            [お届け先情報]
             お名前： {$order_datas['family_name']} {$order_datas['last_name']}
             郵便番号： {$order_datas['postal_code']}
             住所： {$order_datas['address']}
@@ -165,7 +166,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             電話番号： {$order_datas['phone_number']}
             お支払い方法： {$payment_method[$order_datas['payment_method']]}
 
-            ご注文内容：
+            [ご注文内容]
             {$item_list}
             小計： ¥ {$subtotal_number}
             送料： ¥ {$shipping_fee}
@@ -173,11 +174,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             ---
 
-            配送予定：
+            [配送予定]
             商品は通常、ご注文から3～5営業日以内に発送いたします。
             発送が完了しましたら、改めて発送完了メールをお送りいたします。
 
-            お問い合わせ：
+            [お問い合わせ]
             ご注文内容の確認や変更、その他ご質問がございましたら、以下までご連絡ください。
             メール: support@soundspace.com
             電話: 0120-XXX-XXXX（受付時間: 平日9:00～17:00）
@@ -241,27 +242,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <tr>
                         <th>お名前</th>
-                        <td><?php echo $_SESSION["order_datas"]["family_name"]." ".$_SESSION["order_datas"]["last_name"];?></td>
+                        <td><?php echo $order_datas["family_name"]." ".$order_datas["last_name"];?></td>
                     </tr>
                     <tr>
                         <th>郵便番号</th>
-                        <td><?php echo $_SESSION["order_datas"]["postal_code"];?></td>
+                        <td><?php echo $order_datas["postal_code"];?></td>
                     </tr>
                     <tr>
                         <th>住所</th>
-                        <td><?php echo $_SESSION["order_datas"]["address"];?></td>
+                        <td><?php echo $order_datas["address"];?></td>
                     </tr>
                     <tr>
                         <th>メールアドレス</th>
-                        <td><?php echo $_SESSION["order_datas"]["email"];?></td>
+                        <td><?php echo $order_datas["email"];?></td>
                     </tr>
                     <tr>
                         <th>電話番号</th>
-                        <td><?php echo $_SESSION["order_datas"]["phone_number"];?></td>
+                        <td><?php echo $order_datas["phone_number"];?></td>
                     </tr>
                     <tr>
                         <th>お支払い方法</th>
-                        <td><?php echo $payment_method[$_SESSION["order_datas"]["payment_method"]];?></td>
+                        <td><?php echo $payment_method[$order_datas["payment_method"]];?></td>
                     </tr>
                 </table>
             </div>
