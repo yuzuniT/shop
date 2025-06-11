@@ -187,7 +187,7 @@ function ValidateContactMessage(string $message): ?string {
     if (empty($message)) {
         return "お問い合わせメッセージを入力してください。";
     }
-    elseif (!preg_match('/^.+$/u', $message)) {
+    elseif (!preg_match('/^[\s\S]+$/u', $message)) {
         return "有効なメッセージを入力してください。";
     }
     return null;

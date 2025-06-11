@@ -223,7 +223,7 @@ footer{
 /* お問い合わせ確認 */
 
 .confirmation_container{
-    max-width:600px;
+    max-width:700px;
     margin:0 auto;
 }
 
@@ -238,6 +238,12 @@ footer{
 
 }
 
+.contact_info_detail{
+    background-color:#F5F5F5;
+    white-space:pre-line;
+    padding:1vw;
+}
+
 .label{
     font-weight:bold;
     text-align:right;
@@ -245,6 +251,13 @@ footer{
 
 .value{
     word-break:break-all;
+}
+
+.contact_btn_container{
+    display:flex;
+    justify-content:flex-end;
+    margin:15px 10px;
+    gap:20px;
 }
 
 
