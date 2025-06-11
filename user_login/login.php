@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $errors = validation($datas,"login");
     if(empty($errors)){
         //メールアドレスから該当するユーザー情報を取得
-        $sql = "SELECT email, password, family_name, last_name FROM members WHERE email = :email";
+        $sql = "SELECT id, email, password, family_name, last_name FROM members WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue('email',$datas['email'],PDO::PARAM_STR);
         $stmt->execute();
