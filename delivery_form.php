@@ -6,7 +6,7 @@ require_once "user_login/functions.php";
 
 session_start();
 
-//POSTされてきたデータを格納する変数の定義と初期化
+// POSTされてきたデータを格納する変数の定義と初期化
 $order_datas = [
     'family_name'  => '',
     'last_name'  => '',
@@ -24,6 +24,9 @@ $errors=[];
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    //CSRF対策
+    checkToken();
 
     // POSTされてきたデータを変数に格納
     foreach($order_datas as $key => $value) {
@@ -129,6 +132,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <div style="text-align:end">
             <button type="button" onclick="location.href='view_cart.php'">戻る</button>
+            <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
             <input type="hidden" name="total_amount" value="<?php echo $_POST["total_amount"];?>">
             <input type="hidden" name="submit" value="1">
             <button type="submit">次へ進む</button>

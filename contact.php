@@ -21,8 +21,15 @@ $contact_datas = [
 
 $errors=[];
 
+//GET通信だった場合はセッション変数にトークンを追加
+if($_SERVER['REQUEST_METHOD'] != 'POST'){
+    setToken();
+}
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    //CSRF対策
+    checkToken();
 
     // POSTされてきたデータを変数に格納
     foreach($contact_datas as $key => $value) {
@@ -133,6 +140,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <div style="text-align:end">
             <input type="hidden" name="submit" value="1">
+            <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
             <button type="submit">次へ進む</button>
         </div>
 

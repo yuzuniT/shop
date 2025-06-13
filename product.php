@@ -5,6 +5,13 @@ require_once "user_login/functions.php";
 
 session_start();
 
+if($_SERVER["REQUEST_METHOD"]=="GET"){
+
+//GET通信だった場合はセッション変数にトークンを追加
+    setToken();
+
+}
+
 // 商品IDの存在確認
 if (!isset($_GET["id"])||empty($_GET["id"])){
     exit("エラー：商品IDが指定されていません。");
@@ -55,6 +62,7 @@ try{
             <input type="hidden" name="product_id" value="<?php echo h($product["id"]);?>">
             <div class="quantity_and_button">
                 <input type="number" name="quantity" value="1" min="1" max="<?php echo $product["stock_quantity"];?>">
+                <input type="hidden" name="token" value="<?php echo h($_SESSION["token"]);?>">
                 <button type="submit">カートに追加する</button>
             </div>
         </form>

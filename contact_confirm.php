@@ -36,7 +36,15 @@ foreach($contact_datas as $key => $value) {
     }
 }
 
+//GET通信だった場合はセッション変数にトークンを追加
+if($_SERVER['REQUEST_METHOD'] != 'POST'){
+    setToken();
+}
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    //CSRF対策
+    checkToken();
 
 
     //注文確定ボタンが押された時、DBへの新規登録を実行
@@ -128,6 +136,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
             unset($_SESSION["contact_datas"]);
+            unset($_SESSION["token"]);
             header("location: contact_complete.php?contact_id=".$contact_id);
             exit;
         } catch (PDOException $e) {
@@ -193,6 +202,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="contact_btn_container">
         <button type="button" onclick="location.href='contact.php'">戻る</button>
         <form action="contact_confirm.php" method="post">
+            <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
             <input type="hidden" name="confirm" value="1">
             <button type="submit">送信</button>
         </form>

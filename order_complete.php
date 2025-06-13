@@ -1,5 +1,10 @@
 <?php
+//ファイルの読み込み
+require_once "user_login/functions.php";
+
 session_start();
+
+$order_id_zerofill=str_pad($_GET["order_id"],8,"0",STR_PAD_LEFT);
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +24,7 @@ session_start();
 
     <div class="message_box">
         お客様のご注文を無事に受け付けました。
-        ご注文番号： [<?php echo str_pad($_GET["order_id"],8,"0",STR_PAD_LEFT);?>]
+        ご注文番号： [<?php echo h($order_id_zerofill);?>]
         ご注文確認メールを、ご登録いただいたメールアドレスにお送りしました。  
         商品の発送準備が整い次第、発送完了メールをお送りします。
         通常、2〜5営業日以内に発送いたします。
