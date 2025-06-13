@@ -148,6 +148,16 @@ footer{
     color:#c45500;
 }
 
+
+/* ログインページ */
+/* 新規登録ページ */
+
+.wrapper{
+    width: 400px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
 /* 商品ページ */
 
 .product_info{

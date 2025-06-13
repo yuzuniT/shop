@@ -94,16 +94,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sound Space/新規登録</title>
     <base href="/shop/">
     <link href="style.css" rel="stylesheet">
-    <style>
-        body{
-            font: 14px sans-serif;
-        }
-        .wrapper{
-            width: 400px;
-            padding: 20px;
-            margin: 0 auto;
-        }
-    </style>
+
 </head>
 <body>
 <?php include "../common/header.php"; ?>
@@ -117,11 +108,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="register_name_box">
 
                 <label for="family_name">姓</label>
-                <input type="text" name="family_name" class="form-control <?php echo isset($errors['family_name']) && !empty(h($errors['family_name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['family_name']); ?>">
+                <input type="text" name="family_name" class="form-control <?php echo isset($errors['family_name']) && !empty(h($errors['family_name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['family_name']); ?>" required>
                 <span class="invalid-feedback"><?php echo isset($errors['family_name']) ? h($errors['family_name']) : ''; ?></span>
 
                 <label for="last_name">名</label>
-                <input type="text" name="last_name" class="form-control <?php echo isset($errors['last_name']) && !empty(h($errors['last_name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['last_name']); ?>">
+                <input type="text" name="last_name" class="form-control <?php echo isset($errors['last_name']) && !empty(h($errors['last_name'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['last_name']); ?>" required>
                 <span class="invalid-feedback"><?php echo isset($errors['last_name']) ? h($errors['last_name']) : ''; ?></span>
                 
             </div>
@@ -129,17 +120,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             <div>
                 <label>メールアドレス</label>
-                <input type="text" name="email" class="form-control <?php echo isset($errors['email']) && !empty(h($errors['email'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['email']); ?>">
+                <input type="text" name="email" class="form-control <?php echo isset($errors['email']) && !empty(h($errors['email'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['email']); ?>" required>
                 <span class="invalid-feedback"><?php echo isset($errors['email']) ? h($errors['email']) : ''; ?></span>
             </div>
             <div>
                 <label>パスワード</label>
-                <input type="password" name="password" class="form-control <?php echo  isset($errors['password']) && !empty(h($errors['password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['password']); ?>">
+                <input type="password" name="password" class="form-control <?php echo  isset($errors['password']) && !empty(h($errors['password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['password']); ?>" required>
                 <span class="invalid-feedback"><?php echo isset($errors['password']) ? h($errors['password']) : ''; ?></span>
             </div>
             <div>
                 <label>確認用パスワード</label>
-                <input type="password" name="confirm_password" class="form-control <?php echo  isset($errors['confirm_password']) && !empty(h($errors['confirm_password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['confirm_password']); ?>">
+                <input type="password" name="confirm_password" class="form-control <?php echo  isset($errors['confirm_password']) && !empty(h($errors['confirm_password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['confirm_password']); ?>" required>
                 <span class="invalid-feedback"><?php echo isset($errors['confirm_password']) ? h($errors['confirm_password']) : ''; ?></span>
             </div>
             <div style="text-align:end">

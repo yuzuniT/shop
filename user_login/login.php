@@ -77,16 +77,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <base href="/shop/">
     <title>Sound Space/ログイン</title>
     <link href="style.css" rel="stylesheet">
-    <style>
-        body{
-            font: 14px sans-serif;
-        }
-        .wrapper{
-            width: 400px;
-            padding: 20px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 <body>
 
@@ -114,14 +104,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label for="email">メールアドレス</label>
                 <!-- isset($errors['email'])を条件に追加
                 isset関数の引数は変数や配列のキーのみ。関数の戻り値であるh($errors['email'])は引数にできないため、ここではh関数を使わない。 -->
-                <input type="text" name="email" class="form-control <?php echo isset($errors['email']) && !empty(h($errors['email'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['email']); ?>">
+                <input type="text" name="email" class="form-control <?php echo isset($errors['email']) && !empty(h($errors['email'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['email']); ?>" required>
                 <span class="invalid-feedback"><?php echo isset($errors['email']) ? h($errors['email']) : ''; ?></span>
             </div>
 
             <div>
                 <label for="password">パスワード</label>
                 <!-- isset($errors['password'])を条件に追加 -->
-                <input type="password" name="password" class="form-control <?php echo isset($errors['password']) && !empty(h($errors['password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['password']); ?>">
+                <input type="password" name="password" class="form-control <?php echo isset($errors['password']) && !empty(h($errors['password'])) ? 'is-invalid' : ''; ?>" value="<?php echo h($datas['password']); ?>" required>
                 <span class="invalid-feedback"><?php echo isset($errors['password']) ? h($errors['password']) : ''; ?></span>
             </div>
 
