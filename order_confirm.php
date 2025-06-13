@@ -48,9 +48,15 @@ foreach(array_keys($_SESSION["cart_items"]) as $product_id) {
 }
 
 
+//GET通信だった場合はセッション変数にトークンを追加
+if($_SERVER['REQUEST_METHOD'] != 'POST'){
+    setToken();
+}
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+    //CSRF対策
+    checkToken();
 
     //注文確定ボタンが押された時、DBへの新規登録を実行
     if($_POST["confirm"]==TRUE){
@@ -134,7 +140,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             foreach($item_datas as $product_id => $item){
                 $item_total=$item["base_price"]*$item["quantity"];
                 $subtotal += $item_total;
-                $item_list .= "商品名：{$item["product_name"]} | 価格：¥ ". number_format($item["base_price"])." | 数量：{$item["quantity"]} | 小計：¥ ". number_format($item_total) ."\n";
+                $item_list .= "商品名：{$item["product_name"]} | 価格：￥ ". number_format($item["base_price"])." | 数量：{$item["quantity"]} | 小計：￥ ". number_format($item_total) ."\n";
             }
 
             $total=number_format($subtotal + 610);
@@ -145,7 +151,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             $order_id_zerofill=str_pad($order_id,8,"0",STR_PAD_LEFT);
 
-            $subject='ご注文ありがとうございます！注文受付完了のお知らせ（注文番号: ' . $order_id_zerofill . '）';
+            $subject='ご注文ありがとうございます / 注文受付完了のお知らせ（注文番号: ' . $order_id_zerofill . '）';
             $message=<<<EOD
 
             {$order_datas['family_name']} {$order_datas['last_name']} 様
@@ -168,9 +174,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             [ご注文内容]
             {$item_list}
-            小計： ¥ {$subtotal_number}
-            送料： ¥ {$shipping_fee}
-            合計： ¥ {$total}
+            小計：￥ {$subtotal_number}
+            送料：￥ {$shipping_fee}
+            合計：￥ {$total}
 
             ---
 
@@ -204,6 +210,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             unset($_SESSION["cart_items"]);
             unset($_SESSION["order_datas"]);
+            unset($_SESSION["token"]);
             header("location: order_complete.php?order_id=".$order_id);
             exit;
         } catch (PDOException $e) {
@@ -309,6 +316,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <button onclick="location.href='delivery_form.php'">戻る</button>
             <form action="order_confirm.php" method="post">
                 <input type="hidden" name="total_amount" value="<?php echo $sum;?>">
+                <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
                 <input type="hidden" name="confirm" value="1">
                 <button type="submit">注文確定</button>
             </form>

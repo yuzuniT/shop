@@ -1,5 +1,11 @@
 <?php
+//ファイルの読み込み
+require_once "user_login/functions.php";
+
+//セッションの開始
 session_start();
+
+$contact_id_zerofill=str_pad($_GET["contact_id"],8,"0",STR_PAD_LEFT);
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +26,7 @@ session_start();
     <div class="message_box">
         お客様のお問い合わせを無事に受け付けました。
         ご入力いただいた内容を確認後、通常2〜3営業日以内にご返信いたします。
-        お問い合わせ番号：[<?php echo str_pad($_GET["contact_id"],8,"0",STR_PAD_LEFT);?>]
+        お問い合わせ番号：[<?php echo h($contact_id_zerofill);?>]
         ※ご返信はご登録いただいたメールアドレスにお送りします。
         万が一、返信が届かない場合は、迷惑メールフォルダをご確認いただくか、再度お問い合わせください。
 

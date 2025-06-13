@@ -7,12 +7,16 @@ require_once "user_login/db_connect.php";
 require_once "user_login/functions.php";
 
 
-// セッション変数 $_SESSION["cart_items"]を確認。空であればcart_empty.phpへリダイレクト
 
 session_start();
 
 
 if($_SERVER["REQUEST_METHOD"]=="GET"){
+
+//GET通信だった場合はセッション変数にトークンを追加
+    setToken();
+
+// セッション変数 $_SESSION["cart_items"]を確認。空であればcart_empty.phpへリダイレクト    
 
     if(!isset($_SESSION["cart_items"]) || empty($_SESSION["cart_items"])){
         header("location:cart_empty.php");
@@ -21,6 +25,9 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
 
 
 }elseif($_SERVER["REQUEST_METHOD"]=="POST"){
+
+    //CSRF対策
+    checkToken();
 
 
     // 買い物かごで削除ボタンを押した時の処理
@@ -169,6 +176,7 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
 
     <div class="sum_price_info">
         <form style="text-align:center" action="delivery_form.php" method="post">
+            <input type="hidden" name="token" value="<?php echo h($_SESSION["token"]);?>">
             <input type="hidden" name="total_amount" value="<?php echo $sum;?>">
             <button type="submit">ご購入手続き</button>
         </form>
