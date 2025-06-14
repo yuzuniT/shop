@@ -17,4 +17,8 @@ config/*.env
 
 filelist.txt
 
+img/main_buttons/old/
+img/main_buttons/main_buttons.xcf
+
+
 #All filepaths in shop folder

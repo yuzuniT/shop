@@ -35,7 +35,7 @@ header{
 }
 
 
-.header_container{
+.header_container {
     padding:10px;
     display:flex;
     height:100px;
@@ -48,29 +48,43 @@ header{
 }
 
 
-.main_buttons_container{
+.main_buttons_container {
     display:flex;
     justify-content:flex-end;
     max-height:50px;
-    gap:10px;
+    gap:20px;
+    min-width: 170px;
+    justify-content: space-around;
+    align-items: center;
+    padding-right: 15px;
 }
 
-.welcome{
+.welcome {
     flex-shrink:0.4;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.welcome_text{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
 }
 
 
-.main_button{
-    max-height:50px;
-    max-width:50px;
+
+.main_button {
+    max-height:70px;
+    max-width:70px;
 }
 
-.search_form{
+.search_form {
     display:flex;
     flex-grow:1;
     flex-shrink:2.5;
-    min-width:50vw;
+    min-width:150px;
 }
+
 .search_form form{
     display:inherit;
     flex-grow:inherit;
