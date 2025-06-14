@@ -49,7 +49,7 @@ CREATE TABLE shop.cart_items(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     member_id INT NOT NULL,
     product_id VARCHAR(10) NOT NULL,
-    number INT NOT NULL,
+    quantity INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (member_id) REFERENCES members(id),
@@ -102,6 +102,7 @@ CREATE TABLE shop.delivery_info(
 
 CREATE TABLE shop.contacts(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    member_id INT,
     family_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -112,5 +113,6 @@ CREATE TABLE shop.contacts(
     status VARCHAR(20) DEFAULT 'pending',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    FOREIGN KEY (member_id) REFERENCES members(id)
 );
 
