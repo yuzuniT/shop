@@ -33,7 +33,9 @@ $keyword = isset($_GET["search"]) && !empty($_GET["search"]) ? h($_GET["search"]
 
             <!--ログイン済 : ようこそ！◯◯さん
                 未ログイン : 「ログイン」リンクで誘導-->
-            <p>ようこそ！ <?php echo $user_name?>  さん</p>
+            <div>
+                <p class="welcome_text"><span>ようこそ！</span><span> <?php echo $user_name?>  さん</span></p>
+            </div>
             <?php if (!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && isset($_SESSION["name"]))):?>
                 <a href='user_login/login.php'>ログイン</a>
             <?php endif; ?>
@@ -51,9 +53,11 @@ $keyword = isset($_GET["search"]) && !empty($_GET["search"]) ? h($_GET["search"]
                 <img class="main_button" src="img/main_buttons/question.png">
             </a>
             <!--ログアウト-->
-            <a class="main_button" href="user_login/logout.php">
-                <img class="main_button" src="img/main_buttons/logout.png">
-            </a>
+            <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true):?>
+                <a class="main_button" href="user_login/logout.php">
+                    <img class="main_button" src="img/main_buttons/logout.png">
+                </a>
+            <?php endif; ?>
 
         </div>
 
