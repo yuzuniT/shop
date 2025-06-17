@@ -22,4 +22,10 @@ https://docs.google.com/spreadsheets/d/101n_6tjtNjLqDq1EUwKNTWGXp0tCrQ43mKaziv_D
 
  <li>ローカル環境（XAMPP）でメールを送受信</li>
   https://trivia.denet.co.jp/blog/%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E7%92%B0%E5%A2%83%EF%BC%88xampp%EF%BC%89%E3%81%A7%E3%83%A1%E3%83%BC%E3%83%AB%E3%82%92%E9%80%81%E5%8F%97%E4%BF%A1/
+
+  <li>DB設計 テーブル定義書 テンプレート</li>
+  https://qiita.com/maco165/items/83ec720277a52cc61a27
+
+  <li>[テンプレート付]テスト設計書の書き方例</li>
+  https://zenn.dev/ik_takagishi/books/5c6c9fe3a7ad2c/viewer/908fa3
 </ul>
