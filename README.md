@@ -7,6 +7,9 @@ https://docs.google.com/spreadsheets/d/101n_6tjtNjLqDq1EUwKNTWGXp0tCrQ43mKaziv_D
 
 ![名称未設定ファイル(1)(3) drawio(5)](https://github.com/user-attachments/assets/eaf99552-bd6a-41ed-aafd-10c6b18cd4e4)
 
+<h2>テスト仕様書</h2>
+https://docs.google.com/spreadsheets/d/11X4_Hsr9IE6ipQLv1BW6WoUgGWmN8Gpaqcm-onyXw-o/edit?usp=sharing
+
 <h2>参考サイト・記事</h2>
 
 <ul>
