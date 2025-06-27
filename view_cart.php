@@ -159,6 +159,7 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
                 <p class="cart_item_price">¥ <?php echo number_format($item["base_price"]);?></p>
                 <p class="cart_item_quantity">数量：<?php echo h($item["quantity"]);?> 個</p>
                 <form class="delete_cart_item" action="view_cart.php" method="post">
+                    <input type="hidden" name="token" value="<?php echo h($_SESSION["token"]);?>">
                     <input type="hidden" name="product_id" value="<?php echo h($id);?>">
                     <input type="hidden" name="delete_item" value="1">
                     <button class="link_style_btn" type="submit">削除</button>
