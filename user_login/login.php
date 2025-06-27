@@ -92,11 +92,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <p>メールアドレスとパスワードを入力してください。</p>
 
-        <?php 
-        if(!empty($login_err)){
-            echo '<div class="alert alert-danger">' . $login_err . '</div>';
-        }        
-        ?>
+        <span class="invalid-feedback"><?php echo isset($login_err) ? h($login_err) : ''; ?></span>
 
         <form class="form_group" action="<?php echo $_SERVER ['SCRIPT_NAME']; ?>" method="post">
 
