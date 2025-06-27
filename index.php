@@ -8,16 +8,6 @@ session_start();
 // ページネーションの設定
 $items_per_page= 8; //1ページに表示する商品数(4列*2行)
 
-if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] >=1){
-    $page=$_GET["page"];
-}
-else{
-    $page=1;
-}
-
-// 何番目の商品から取得するかを表す
-$offset=($page-1)*$items_per_page;
-
 // ヘッダーから商品が検索された場合
 if(isset($_GET["search"]) && !empty($_GET["search"])){
 
@@ -30,6 +20,17 @@ if(isset($_GET["search"]) && !empty($_GET["search"])){
         $total_items=$stmt->fetchcolumn();
         $total_pages=ceil($total_items / $items_per_page);
         $total_pages=$total_pages==0 ? 1 : $total_pages;
+
+        // 現在ページ数の設定
+        if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] >=1 && $_GET["page"] <= $total_pages){
+            $page=$_GET["page"];
+        }
+        else{
+            $page=1;
+        }
+
+        // 何番目の商品から取得するかを表す
+        $offset=($page-1)*$items_per_page;
 
         // 商品データを取得
         $stmt=$pdo->prepare("SELECT id, product_name, description, base_price FROM products WHERE is_active=TRUE and product_name LIKE ? LIMIT ? OFFSET ?");
@@ -51,6 +52,17 @@ if(isset($_GET["search"]) && !empty($_GET["search"])){
         $total_items=$stmt->fetchcolumn();
         $total_pages=ceil($total_items / $items_per_page);
         $total_pages=$total_pages==0 ? 1 : $total_pages;
+
+        // 現在ページ数の設定
+        if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] >=1 && $_GET["page"] <= $total_pages){
+            $page=$_GET["page"];
+        }
+        else{
+            $page=1;
+        }
+
+        // 何番目の商品から取得するかを表す
+        $offset=($page-1)*$items_per_page;
 
         // 商品データを取得
         $stmt=$pdo->prepare("SELECT id, product_name, description, base_price FROM products WHERE is_active=TRUE LIMIT ? OFFSET ?");
