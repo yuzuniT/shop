@@ -18,6 +18,15 @@ $order_datas = [
     'payment_method'  => ''
 ];
 
+// 合計金額をセッションから取得
+$total_amount=isset($_SESSION["total_amount"]) ? $_SESSION["total_amount"] : 0;
+
+// $_POST["total_amount"]があれば上書き
+if(isset($_POST["total_amount"])){
+    $total_amount=$_POST["total_amount"];
+    $_SESSION["total_amount"]=$total_amount;// セッションをPOSTの値で上書き
+}
+
 
 $errors=[];
 
@@ -133,7 +142,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div style="text-align:end">
             <button type="button" onclick="location.href='view_cart.php'">戻る</button>
             <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
-            <input type="hidden" name="total_amount" value="<?php echo $_POST["total_amount"];?>">
+            <input type="hidden" name="total_amount" value="<?php echo h($total_amount); ?>">
             <input type="hidden" name="submit" value="1">
             <button type="submit">次へ進む</button>
         </div>

@@ -28,6 +28,9 @@ $order_datas = [
     'payment_method'  => ''
 ];
 
+// total_amountをセッションから取得
+$sum = isset($_SESSION["total_amount"]) ? $_SESSION["total_amount"] : 0;
+
 //注文商品情報の中身を格納する変数の定義と初期化
 $item_datas=[];
 
@@ -211,6 +214,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             unset($_SESSION["cart_items"]);
             unset($_SESSION["order_datas"]);
             unset($_SESSION["token"]);
+            unset($_SESSION["total_amount"]);
             header("location: order_complete.php?order_id=".$order_id);
             exit;
         } catch (PDOException $e) {
@@ -315,7 +319,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="confirm_btn_container">
             <button onclick="location.href='delivery_form.php'">戻る</button>
             <form action="order_confirm.php" method="post">
-                <input type="hidden" name="total_amount" value="<?php echo $sum;?>">
+                <input type="hidden" name="total_amount" value="<?php echo h($sum);?>">
                 <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
                 <input type="hidden" name="confirm" value="1">
                 <button type="submit">注文確定</button>
