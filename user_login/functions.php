@@ -23,7 +23,7 @@ function checkToken(){
 }
 
 
-// order_confirm.phpで使用。submit後エラーが出た時入力情報を欄に残すために。
+// order_confirm.php, contact.phpで使用。submit後エラーが出た時入力情報を欄に残すために。
 function orderValue(string $key, array $datas): ?string {
     $value=isset($datas[$key]) && !empty($datas[$key]) ? h($datas[$key]) : "";
     return $value;
@@ -305,7 +305,8 @@ function validation(array $datas,string $formtype="register"): array{
         }
 
         $phone_number_error=ValidatePhoneNumber($datas["phone_number"]);
-        if ($phone_number_error !== null) {
+        // 電話番号が空欄の場合は実行されない
+        if (isset($datas["phone_number"]) && !empty($datas["phone_number"]) && $phone_number_error !== null) {
             $errors["phone_number"] = $phone_number_error;
         }
         
