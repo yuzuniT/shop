@@ -125,7 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div>
             <label for="contact_title">件名<span class="input_required">（必須）</span></label>
             <br>
-            <input type="text" name="contact_title" placeholder="商品についてのお問い合わせ" required>
+            <input type="text" name="contact_title" placeholder="商品についてのお問い合わせ" value="<?php echo orderValue("contact_title",$contact_datas)?>"required>
             <span class="invalid-feedback"><?php echo isset($errors['contact_title']) ? h($errors['contact_title']) : ''; ?></span>
 
         </div>
@@ -133,7 +133,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div>
             <label for="message">メッセージ<span class="input_required">（必須）</span></label>
             <br>
-            <textarea name="message" rows="8" required></textarea>
+            <textarea name="message" rows="8" required><?php echo orderValue("message",$contact_datas)?></textarea>
             <span class="invalid-feedback"><?php echo isset($errors['message']) ? h($errors['message']) : ''; ?></span>
 
         </div>
