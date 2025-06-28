@@ -170,6 +170,8 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
 
             <?php endforeach;?>
 
+            <?php $_SESSION["total_amount"]=$sum;?>
+
 
         </div>
 
